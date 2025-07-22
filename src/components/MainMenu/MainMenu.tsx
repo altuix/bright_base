@@ -24,11 +24,12 @@ const menuItems: { id: Page; label: string }[] = [
 const MainMenu: React.FC<MainMenuProps> = ({ focusKey: focusKeyParam }) => {
   const { ref, focusSelf, hasFocusedChild, focusKey } = useFocusable({
     focusable: true,
-    saveLastFocusedChild: false, // Important: set to false like in the working example
+    saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
     focusKey: focusKeyParam,
-    onArrowPress: () => true // Let the spatial navigation handle arrow keys
+    isFocusBoundary: true,
+    focusBoundaryDirections: ["right"],
   });
 
   const { currentPage } = useNavigationStore();

@@ -12,7 +12,7 @@ import "../styles/layouts/mainLayout.scss";
 
 const MainLayout: React.FC = () => {
   // Use minimal configuration for the app container
-  const { focusKey } = useFocusable({
+  const { ref, focusKey } = useFocusable({
     focusable: true,
     saveLastFocusedChild: true,
     trackChildren: true,
@@ -29,15 +29,9 @@ const MainLayout: React.FC = () => {
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <div className="main-layout">
+      <div ref={ref} className="main-layout">
         <MainMenu focusKey={FOCUS_KEYS.MAIN_MENU} />
-        <div className="main-content">
-          {isLoading ? (
-            <div className="loading">Loading content...</div>
-          ) : (
-            <ContentGrid focusKey={FOCUS_KEYS.CONTENT_GRID} />
-          )}
-        </div>
+        <ContentGrid focusKey={FOCUS_KEYS.CONTENT_GRID} />
       </div>
     </FocusContext.Provider>
   );

@@ -1,15 +1,29 @@
-/* Content Grid Styles */
-@import '../../styles/variables';
-@import '../../styles/mixins';
+@import '../../styles/_variables';
 
 .content-grid {
-  width: 100%;
-  height: 100%;
+  flex: 1;
+  padding: $spacing-md;
   overflow-y: auto;
-  overflow-x: hidden;
-  @include smooth-scroll;
+  background-color: $background-color;
   
-  .content-rows {
-    padding: $spacing-md $spacing-lg $spacing-xl $spacing-lg;
+  &.focused {
+    // Subtle indication that the grid has focus
+    border-left: 2px solid $focus-color;
+  }
+  
+  .grid-title {
+    margin-bottom: $spacing-lg;
+    
+    h2 {
+      font-size: 1.8rem;
+      color: $text-color;
+    }
+  }
+  
+  .grid-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: $spacing-md;
+    padding: $spacing-sm;
   }
 }

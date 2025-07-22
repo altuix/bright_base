@@ -10,8 +10,8 @@ export const initNavigation = () => {
     useGetBoundingClientRect: true,
     throttle: 0,
     shouldFocusDOMNode: true,
-    // Use corners distance calculation for better spatial navigation
-    distanceCalculationMethod: "corners"
+    // Use center distance calculation for better spatial navigation between elements
+    distanceCalculationMethod: "centers"
   });
 };
 

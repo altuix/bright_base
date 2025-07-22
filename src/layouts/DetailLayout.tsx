@@ -7,17 +7,21 @@ import { FOCUS_KEYS } from '../utils/navigation';
 import '../styles/layouts/detailLayout.scss';
 
 const DetailLayout: React.FC = () => {
-  const { ref, focusKey } = useFocusable({
+  const { ref, focusKey, focusSelf } = useFocusable({
     focusable: true,
-    saveLastFocusedChild: true,
+    saveLastFocusedChild: false,
     trackChildren: true,
     autoRestoreFocus: true,
-    isFocusBoundary: false,
     focusKey: FOCUS_KEYS.DETAIL_LAYOUT
   });
   
-  const { selectedContent, isLoading } = useContentStore();
+  const { selectedContent } = useContentStore();
   const { navigateBack } = useNavigationStore();
+  
+  // Focus self when component mounts
+  useEffect(() => {
+    focusSelf();
+  }, [focusSelf]);
   
   // Handle back button
   useEffect(() => {
@@ -33,31 +37,19 @@ const DetailLayout: React.FC = () => {
     };
   }, [navigateBack]);
   
-  if (isLoading) {
-    return (
-      <FocusContext.Provider value={focusKey}>
-        <div ref={ref} className="detail-layout loading">
-          <div className="loading-text">Loading content details...</div>
-        </div>
-      </FocusContext.Provider>
-    );
-  }
+  // Default content if none selected
+  const defaultContent: ContentItem = {
+    id: 'default',
+    title: 'Sample Content',
+    genre: 'Action',
+    description: 'This is a sample content description. Select content from the main page to see details.',
+    imageUrl: 'https://via.placeholder.com/1280x720/333333/FFFFFF?text=Sample+Content',
+    type: 'movie',
+    duration: 120,
+    rating: 5.0
+  };
   
-  if (!selectedContent) {
-    return (
-      <FocusContext.Provider value={focusKey}>
-        <div ref={ref} className="detail-layout error">
-          <div className="error-text">Content not found</div>
-          <button 
-            className="back-button"
-            onClick={() => navigateBack()}
-          >
-            Go Back
-          </button>
-        </div>
-      </FocusContext.Provider>
-    );
-  }
+  const content = selectedContent || defaultContent;
   
   return (
     <FocusContext.Provider value={focusKey}>
@@ -65,23 +57,30 @@ const DetailLayout: React.FC = () => {
         ref={ref}
         className="detail-layout"
         style={{ 
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url(${selectedContent.imageUrl})` 
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url(${content.imageUrl})` 
         }}
       >
         <div className="detail-content">
-          <h1 className="title">{selectedContent.title}</h1>
+          <h1 className="title">{content.title}</h1>
           
           <div className="metadata">
-            {selectedContent.genre && <span className="genre">{selectedContent.genre}</span>}
-            {selectedContent.duration && (
-              <span className="duration">{Math.floor(selectedContent.duration / 60)}h {selectedContent.duration % 60}m</span>
+            {content.genre && <span className="genre">{content.genre}</span>}
+            {content.duration && (
+              <span className="duration">{Math.floor(content.duration / 60)}h {content.duration % 60}m</span>
             )}
-            {selectedContent.rating && <span className="rating">★ {selectedContent.rating.toFixed(1)}</span>}
+            {content.rating && <span className="rating">★ {content.rating.toFixed(1)}</span>}
           </div>
           
-          <p className="description">{selectedContent.description}</p>
+          <p className="description">{content.description}</p>
           
-          <DetailActions focusKey={FOCUS_KEYS.DETAIL_ACTIONS} content={selectedContent as ContentItem} />
+          <DetailActions focusKey={FOCUS_KEYS.DETAIL_ACTIONS} content={content as ContentItem} />
+          
+          <button 
+            className="back-button"
+            onClick={() => navigateBack()}
+          >
+            Go Back
+          </button>
         </div>
       </div>
     </FocusContext.Provider>

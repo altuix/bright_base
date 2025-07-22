@@ -1,59 +1,65 @@
-import React, { useCallback, useRef } from "react";
+import React, { useEffect } from "react";
 import {
   useFocusable,
   FocusContext,
 } from "@noriginmedia/norigin-spatial-navigation";
-import { useContentStore, ContentItem } from "../../state/contentStore";
-import ContentRow from "./ContentRow";
-import FeaturedContent from "./FeaturedContent";
-import { FOCUS_KEYS, generateFocusKey } from "../../utils/navigation";
+import { useContentStore } from "../../state/contentStore";
+import ContentItem from "./ContentItem";
 import "./contentGrid.scss";
 
 interface ContentGridProps {
   focusKey: string;
 }
 
-const ContentGrid: React.FC<ContentGridProps> = ({ focusKey: focusKeyParam }) => {
-  const { featuredContent, contentRows, isLoading } = useContentStore();
-  const { ref, focusKey } = useFocusable({
+// Sample content items for immediate rendering
+const contentItems = [
+  { id: "item1", title: "Action Movie 1", genre: "Action" },
+  { id: "item2", title: "Comedy Show 1", genre: "Comedy" },
+  { id: "item3", title: "Drama Series 1", genre: "Drama" },
+  { id: "item4", title: "Horror Film 1", genre: "Horror" },
+  { id: "item5", title: "Action Movie 2", genre: "Action" },
+  { id: "item6", title: "Comedy Show 2", genre: "Comedy" },
+  { id: "item7", title: "Drama Series 2", genre: "Drama" },
+  { id: "item8", title: "Horror Film 2", genre: "Horror" },
+];
+
+const ContentGrid: React.FC<ContentGridProps> = ({
+  focusKey: focusKeyParam,
+}) => {
+  const { ref, focusSelf, hasFocusedChild, focusKey } = useFocusable({
     focusable: true,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
-    focusKey: focusKeyParam
+    focusKey: focusKeyParam,
+    isFocusBoundary: true,
+    focusBoundaryDirections: ["left"],
+    preferredChildFocusKey: undefined,
   });
 
-  const scrollingRef = useRef<HTMLDivElement>(null);
+  const { contentRows } = useContentStore();
 
-  // Handle row focus to scroll vertically
-  const onRowFocus = useCallback(
-    ({ y }: { y: number }) => {
-      if (scrollingRef.current) {
-        scrollingRef.current.scrollTo({
-          top: y,
-          behavior: "smooth",
-        });
-      }
-    },
-    [scrollingRef]
-  );
+  // Focus the grid when it mounts
+  useEffect(() => {
+    focusSelf();
+  }, [focusSelf]);
 
   return (
     <FocusContext.Provider value={focusKey}>
-      <div ref={ref} className="content-grid">
-        {featuredContent && (
-          <FeaturedContent 
-            content={featuredContent} 
-          />
-        )}
-
-        <div className="content-rows" ref={scrollingRef}>
-          {contentRows.map((row, index) => (
-            <ContentRow
-              key={row.id || index}
-              title={row.title}
-              items={row.items}
-              onFocus={onRowFocus}
+      <div
+        ref={ref}
+        className={`content-grid ${hasFocusedChild ? "focused" : ""}`}
+      >
+        <div className="grid-title">
+          <h2>Featured Content</h2>
+        </div>
+        <div className="grid-items">
+          {contentItems.map((item) => (
+            <ContentItem
+              key={item.id}
+              id={item.id}
+              title={item.title}
+              genre={item.genre}
             />
           ))}
         </div>
