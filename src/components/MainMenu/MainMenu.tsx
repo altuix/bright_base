@@ -24,27 +24,19 @@ const menuItems: { id: Page; label: string }[] = [
 const MainMenu: React.FC<MainMenuProps> = ({ focusKey: focusKeyParam }) => {
   const { ref, focusSelf, hasFocusedChild, focusKey } = useFocusable({
     focusable: true,
-    saveLastFocusedChild: true,
+    saveLastFocusedChild: false, // Important: set to false like in the working example
     trackChildren: true,
     autoRestoreFocus: true,
-    isFocusBoundary: false,
     focusKey: focusKeyParam,
-    preferredChildFocusKey: undefined,
-    onEnterPress: () => {},
+    onArrowPress: () => true // Let the spatial navigation handle arrow keys
   });
 
   const { currentPage } = useNavigationStore();
 
   // Focus the menu when it mounts
   useEffect(() => {
-    console.log('MainMenu: Focusing self on mount');
     focusSelf();
   }, [focusSelf]);
-  
-  // Add logging for focus changes
-  useEffect(() => {
-    console.log(`MainMenu: hasFocusedChild changed to ${hasFocusedChild}`);
-  }, [hasFocusedChild]);
 
   return (
     <FocusContext.Provider value={focusKey}>

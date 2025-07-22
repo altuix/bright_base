@@ -1,48 +1,36 @@
-import React from 'react';
-import { FocusContext, useFocusable } from '@noriginmedia/norigin-spatial-navigation';
-import ContentCard from './ContentCard';
-import { ContentItem } from '../../state/contentStore';
-import { generateFocusKey } from '../../utils/navigation';
-import './contentRow.scss';
+import React, { useCallback, useRef } from "react";
+import {
+  FocusContext,
+  useFocusable,
+} from "@noriginmedia/norigin-spatial-navigation";
+import ContentCard from "./ContentCard";
+import { ContentItem } from "../../state/contentStore";
+import "./contentRow.scss";
 
 interface ContentRowProps {
   title: string;
   items: ContentItem[];
-  onFocus: (layout: any) => void;
+  onFocus: (layout: { y: number }) => void;
 }
 
 const ContentRow: React.FC<ContentRowProps> = ({ title, items, onFocus }) => {
-  // Add logging for arrow key presses
-  const onArrowPress = React.useCallback((direction: string) => {
-    console.log(`ContentRow (${title}): Arrow ${direction} pressed`);
-    return true; // Let the library handle the navigation
-  }, [title]);
-
-  const handleFocus = React.useCallback((props: any) => {
-    console.log(`ContentRow (${title}): Focused`);
-    if (onFocus) {
-      onFocus(props);
-    }
-  }, [title, onFocus]);
-
   const { ref, focusKey } = useFocusable({
     focusable: true,
+    saveLastFocusedChild: true,
     trackChildren: true,
-    onFocus: handleFocus,
-    onBlur: () => {
-      console.log(`ContentRow (${title}): Blurred`);
-    },
-    onArrowPress
+    onFocus
   });
 
-  const scrollingRef = React.useRef<HTMLDivElement>(null);
+  const scrollingRef = useRef<HTMLDivElement>(null);
 
-  // Handle scroll when item is focused
-  const onItemFocus = React.useCallback(
+  // Handle horizontal scrolling when item is focused
+  const onItemFocus = useCallback(
     ({ x }: { x: number }) => {
       if (scrollingRef.current) {
-        scrollingRef.current.scrollLeft = x;
-        scrollingRef.current.style.scrollBehavior = 'smooth';
+        scrollingRef.current.scrollTo({
+          left: x,
+          behavior: "smooth"
+        });
       }
     },
     [scrollingRef]
@@ -51,18 +39,15 @@ const ContentRow: React.FC<ContentRowProps> = ({ title, items, onFocus }) => {
   return (
     <FocusContext.Provider value={focusKey}>
       <div className="content-row" ref={ref}>
-        <h2 className="row-title">{title}</h2>
-        <div className="row-scrolling-wrapper" ref={scrollingRef}>
-          <div className="row-items">
-            {items.map((item) => (
-              <ContentCard
-                key={item.id}
-                content={item}
-                onFocus={onItemFocus}
-                focusKey={generateFocusKey('content', item.id)}
-              />
-            ))}
-          </div>
+        <h3 className="row-title">{title}</h3>
+        <div className="row-items" ref={scrollingRef}>
+          {items.map((item) => (
+            <ContentCard
+              key={item.id}
+              item={item}
+              onFocus={onItemFocus}
+            />
+          ))}
         </div>
       </div>
     </FocusContext.Provider>

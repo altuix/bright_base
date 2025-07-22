@@ -1,70 +1,38 @@
-import React from 'react';
-import { useFocusable } from '@noriginmedia/norigin-spatial-navigation';
-import { useNavigationStore } from '../../state/navigationStore';
-import { useContentStore } from '../../state/contentStore';
-import { ContentItem } from '../../state/contentStore';
-import './contentCard.scss';
+import React from "react";
+import { useFocusable } from "@noriginmedia/norigin-spatial-navigation";
+import { useNavigationStore } from "../../state/navigationStore";
+import { useContentStore, ContentItem } from "../../state/contentStore";
+import "./contentCard.scss";
 
 interface ContentCardProps {
-  content: ContentItem;
-  onFocus: (layout: any) => void;
-  focusKey: string;
+  item: ContentItem;
+  onFocus: (layout: { x: number }) => void;
 }
 
-const ContentCard: React.FC<ContentCardProps> = ({ content, onFocus, focusKey }) => {
-  const handleFocus = React.useCallback((props: any) => {
-    console.log(`ContentCard (${content.title}): Focused`);
-    if (onFocus) {
-      onFocus(props);
-    }
-  }, [content.title, onFocus]);
-
-  const { ref, focused } = useFocusable({
-    focusable: true,
-    focusKey,
-    onFocus: handleFocus,
-    onBlur: () => {
-      console.log(`ContentCard (${content.title}): Blurred`);
-    },
-    onEnterPress: () => {
-      console.log(`ContentCard: Enter pressed on ${content.title}`);
-      // Select this content and navigate to detail page
-      selectContent(content);
-      navigateTo('detail');
-    },
-    onArrowPress: (direction: string) => {
-      console.log(`ContentCard (${content.title}): Arrow ${direction} pressed`);
-      return true; // Let the library handle the navigation
-    },
-    extraProps: {
-      id: content.id
-    }
-  });
-
+const ContentCard: React.FC<ContentCardProps> = ({ item, onFocus }) => {
   const { navigateTo } = useNavigationStore();
   const { selectContent } = useContentStore();
 
+  const { ref, focused } = useFocusable({
+    focusable: true,
+    onEnterPress: () => {
+      selectContent(item);
+      navigateTo("detail");
+    },
+    onFocus
+  });
+
   return (
-    <div 
+    <div
       ref={ref}
-      className={`content-card ${focused ? 'focused' : ''}`}
-      data-testid="content-card"
+      className={`content-card ${focused ? "focused" : ""}`}
     >
-      <div className="card-image-container">
-        <img 
-          src={content.imageUrl} 
-          alt={content.title} 
-          className="card-image"
-        />
-        {content.type === 'live' && (
-          <div className="live-badge">LIVE</div>
-        )}
+      <div className="card-image">
+        <img src={item.imageUrl} alt={item.title} />
       </div>
       <div className="card-info">
-        <h3 className="card-title">{content.title}</h3>
-        {content.rating && (
-          <div className="card-rating">★ {content.rating.toFixed(1)}</div>
-        )}
+        <h3 className="card-title">{item.title}</h3>
+        {item.genre && <div className="card-genre">{item.genre}</div>}
       </div>
     </div>
   );
