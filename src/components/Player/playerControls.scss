@@ -1,0 +1,114 @@
+/* Player Controls Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.player-controls {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: $spacing-lg;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  z-index: $z-overlay;
+  
+  .content-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-md;
+    
+    .title {
+      font-size: 1.5rem;
+      margin: 0;
+      margin-right: $spacing-md;
+    }
+    
+    .episode {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+  }
+  
+  .progress-bar-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: $spacing-lg;
+    
+    .time-display, .time-remaining {
+      font-size: 0.9rem;
+      width: 4rem;
+    }
+    
+    .time-display {
+      text-align: right;
+      margin-right: $spacing-sm;
+    }
+    
+    .time-remaining {
+      text-align: left;
+      margin-left: $spacing-sm;
+    }
+    
+    .progress-bar {
+      flex: 1;
+      height: 0.4rem;
+      background-color: rgba(255, 255, 255, 0.3);
+      border-radius: 0.2rem;
+      overflow: hidden;
+      
+      .progress-filled {
+        height: 100%;
+        background-color: $primary-color;
+        border-radius: 0.2rem;
+      }
+    }
+  }
+  
+  .control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: $spacing-lg;
+    margin-bottom: $spacing-md;
+  }
+  
+  .back-button-container {
+    position: absolute;
+    top: $spacing-lg;
+    right: $spacing-lg;
+  }
+}
+
+.control-button {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform $transition-speed $transition-function,
+              background-color $transition-speed $transition-function;
+  
+  &.focused {
+    transform: scale(1.1);
+    background-color: $primary-color;
+  }
+  
+  &.primary {
+    width: 4.5rem;
+    height: 4.5rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    
+    .button-icon {
+      font-size: 2rem;
+    }
+    
+    &.focused {
+      background-color: $primary-color;
+    }
+  }
+  
+  .button-icon {
+    font-size: 1.5rem;
+    color: white;
+  }
+}

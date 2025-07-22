@@ -1,0 +1,31 @@
+/* Main Menu Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.main-menu {
+  width: 15rem;
+  height: 100%;
+  background-color: rgba($background-lighter, 0.9);
+  padding: $spacing-lg $spacing-md;
+  transition: background-color $transition-speed $transition-function;
+  
+  &.focused {
+    background-color: rgba($background-lighter, 1);
+  }
+  
+  .logo {
+    margin-bottom: $spacing-xl;
+    padding: $spacing-sm 0;
+    
+    h1 {
+      color: $primary-color;
+      font-size: 2rem;
+      text-align: center;
+    }
+  }
+  
+  .menu-items {
+    @include flex-column;
+    gap: $spacing-md;
+  }
+}

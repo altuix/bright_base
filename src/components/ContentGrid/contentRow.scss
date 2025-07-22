@@ -1,0 +1,25 @@
+/* Content Row Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.content-row {
+  margin-bottom: $spacing-xl;
+  
+  .row-title {
+    font-size: 1.5rem;
+    margin-bottom: $spacing-md;
+    padding-left: $spacing-sm;
+  }
+  
+  .row-scrolling-wrapper {
+    @include smooth-scroll;
+    overflow-x: auto;
+    overflow-y: hidden;
+    
+    .row-items {
+      display: flex;
+      padding: $spacing-sm 0;
+      gap: $spacing-md;
+    }
+  }
+}

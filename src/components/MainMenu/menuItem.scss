@@ -1,0 +1,24 @@
+/* Menu Item Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.menu-item {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-sm;
+  font-size: 1.2rem;
+  color: $text-secondary;
+  transition: transform $transition-speed $transition-function,
+              background-color $transition-speed $transition-function,
+              color $transition-speed $transition-function;
+  
+  &.active {
+    color: $text-color;
+    font-weight: 600;
+  }
+  
+  &.focused {
+    background-color: $primary-color;
+    color: $text-color;
+    transform: scale(1.05);
+  }
+}

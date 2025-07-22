@@ -1,0 +1,15 @@
+/* Content Grid Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.content-grid {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  @include smooth-scroll;
+  
+  .content-rows {
+    padding: $spacing-md $spacing-lg $spacing-xl $spacing-lg;
+  }
+}

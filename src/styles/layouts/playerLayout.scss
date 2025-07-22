@@ -1,0 +1,72 @@
+/* Player Layout Styles */
+@import '../variables';
+@import '../mixins';
+
+.player-layout {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #000;
+  position: relative;
+  
+  .video-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .video-placeholder {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      
+      .video-frame {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+      .pause-indicator {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
+        width: 6rem;
+        height: 6rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        .pause-icon {
+          font-size: 3rem;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  &.error {
+    @include flex-center;
+    flex-direction: column;
+    
+    .error-text {
+      font-size: 1.5rem;
+      margin-bottom: $spacing-lg;
+      color: $error-color;
+    }
+    
+    .back-button {
+      @include button-base;
+      background-color: $primary-color;
+      color: white;
+      
+      &:focus {
+        background-color: lighten($primary-color, 10%);
+        transform: scale(1.05);
+      }
+    }
+  }
+}

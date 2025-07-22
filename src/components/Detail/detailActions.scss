@@ -1,0 +1,35 @@
+/* Detail Actions Styles */
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.detail-actions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+}
+
+.action-button {
+  @include flex-column;
+  align-items: center;
+  padding: $spacing-sm;
+  border-radius: $border-radius-md;
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 8rem;
+  transition: transform $transition-speed $transition-function,
+              background-color $transition-speed $transition-function;
+  
+  &.focused {
+    transform: scale(1.05);
+    background-color: $primary-color;
+  }
+  
+  .button-icon {
+    font-size: 2rem;
+    margin-bottom: $spacing-sm;
+  }
+  
+  .button-label {
+    font-size: 1rem;
+    text-align: center;
+  }
+}
