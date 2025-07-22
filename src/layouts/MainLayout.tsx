@@ -27,6 +27,17 @@ const MainLayout: React.FC = () => {
     fetchHomeContent();
   }, [fetchHomeContent]);
 
+  // This ensures that both components are properly registered before attempting navigation
+  useEffect(() => {
+    // Small delay to ensure components are fully mounted
+    const timer = setTimeout(() => {
+      // Start with focus on the content grid by default
+      // You can change this to FOCUS_KEYS.MAIN_MENU if you want to start with the menu focused
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <FocusContext.Provider value={focusKey}>
       <div ref={ref} className="main-layout">

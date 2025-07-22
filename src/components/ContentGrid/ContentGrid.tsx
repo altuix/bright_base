@@ -26,18 +26,30 @@ const contentItems = [
 const ContentGrid: React.FC<ContentGridProps> = ({
   focusKey: focusKeyParam,
 }) => {
-  const { ref, focusSelf, hasFocusedChild, focusKey } = useFocusable({
+  const { ref, focusSelf, hasFocusedChild, focusKey, setFocus } = useFocusable({
     focusable: true,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
     focusKey: focusKeyParam,
-    isFocusBoundary: true,
-    focusBoundaryDirections: ["left"],
     preferredChildFocusKey: undefined,
+    onArrowPress: (direction) => {
+      console.log('ContentGrid onArrowPress:', direction);
+      if (direction === 'left') {
+        console.log('ContentGrid: Attempting to navigate left to menu');
+        setFocus('MENU');
+        return true;
+      }
+      return false;
+    }
   });
 
   const { contentRows } = useContentStore();
+
+  // Log when focus changes for debugging
+  useEffect(() => {
+    console.log('ContentGrid hasFocusedChild:', hasFocusedChild);
+  }, [hasFocusedChild]);
 
   // Focus the grid when it mounts
   useEffect(() => {

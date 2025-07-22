@@ -22,17 +22,29 @@ const menuItems: { id: Page; label: string }[] = [
 ];
 
 const MainMenu: React.FC<MainMenuProps> = ({ focusKey: focusKeyParam }) => {
-  const { ref, focusSelf, hasFocusedChild, focusKey } = useFocusable({
+  const { ref, focusSelf, hasFocusedChild, focusKey, setFocus } = useFocusable({
     focusable: true,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
     focusKey: focusKeyParam,
-    isFocusBoundary: true,
-    focusBoundaryDirections: ["right"],
+    onArrowPress: (direction) => {
+      console.log('MainMenu onArrowPress:', direction);
+      if (direction === 'right') {
+        console.log('MainMenu: Attempting to navigate right to content grid');
+        setFocus('CONTENT_GRID');
+        return true;
+      }
+      return false;
+    }
   });
 
   const { currentPage } = useNavigationStore();
+
+  // Log when focus changes for debugging
+  useEffect(() => {
+    console.log('MainMenu hasFocusedChild:', hasFocusedChild);
+  }, [hasFocusedChild]);
 
   // Focus the menu when it mounts
   useEffect(() => {
