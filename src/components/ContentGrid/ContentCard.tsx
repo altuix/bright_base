@@ -12,13 +12,29 @@ interface ContentCardProps {
 }
 
 const ContentCard: React.FC<ContentCardProps> = ({ content, onFocus, focusKey }) => {
+  const handleFocus = React.useCallback((props: any) => {
+    console.log(`ContentCard (${content.title}): Focused`);
+    if (onFocus) {
+      onFocus(props);
+    }
+  }, [content.title, onFocus]);
+
   const { ref, focused } = useFocusable({
+    focusable: true,
     focusKey,
-    onFocus,
+    onFocus: handleFocus,
+    onBlur: () => {
+      console.log(`ContentCard (${content.title}): Blurred`);
+    },
     onEnterPress: () => {
+      console.log(`ContentCard: Enter pressed on ${content.title}`);
       // Select this content and navigate to detail page
       selectContent(content);
       navigateTo('detail');
+    },
+    onArrowPress: (direction: string) => {
+      console.log(`ContentCard (${content.title}): Arrow ${direction} pressed`);
+      return true; // Let the library handle the navigation
     },
     extraProps: {
       id: content.id

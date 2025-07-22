@@ -10,9 +10,21 @@ interface FeaturedContentProps {
 
 const FeaturedContent: React.FC<FeaturedContentProps> = ({ content }) => {
   const { ref, focused } = useFocusable({
+    focusable: true,
     onEnterPress: () => {
+      console.log(`FeaturedContent: Enter pressed on ${content.title}`);
       // Navigate to detail page
       navigateTo('detail');
+    },
+    onFocus: () => {
+      console.log(`FeaturedContent: ${content.title} focused`);
+    },
+    onBlur: () => {
+      console.log(`FeaturedContent: ${content.title} blurred`);
+    },
+    onArrowPress: (direction: string) => {
+      console.log(`FeaturedContent: Arrow ${direction} pressed on ${content.title}`);
+      return true; // Let the library handle the navigation
     }
   });
 

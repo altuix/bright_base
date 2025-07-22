@@ -10,17 +10,40 @@ interface ContentGridProps {
 }
 
 const ContentGrid: React.FC<ContentGridProps> = ({ focusKey: focusKeyParam }) => {
+  // Add keyboard navigation logging
+  const onArrowPress = React.useCallback((direction: string) => {
+    console.log(`ContentGrid: Arrow ${direction} pressed`);
+    return true; // Let the library handle the navigation
+  }, []);
+
   const {
     ref,
-    focusKey
+    focusKey,
+    focusSelf
   } = useFocusable({
     focusable: true,
     saveLastFocusedChild: true,
     trackChildren: true,
     autoRestoreFocus: true,
     isFocusBoundary: false,
-    focusKey: focusKeyParam
+    focusKey: focusKeyParam,
+    onArrowPress: onArrowPress,
+    onFocus: () => {
+      console.log('ContentGrid: Focused');
+    },
+    onBlur: () => {
+      console.log('ContentGrid: Blurred');
+    }
   });
+  
+  // We don't auto-focus the content grid anymore
+  // Add logging for focus changes
+  React.useEffect(() => {
+    console.log('ContentGrid: Component mounted');
+    return () => {
+      console.log('ContentGrid: Component unmounted');
+    };
+  }, []);
 
   const { featuredContent, contentRows } = useContentStore();
 

@@ -12,8 +12,27 @@ interface ContentRowProps {
 }
 
 const ContentRow: React.FC<ContentRowProps> = ({ title, items, onFocus }) => {
+  // Add logging for arrow key presses
+  const onArrowPress = React.useCallback((direction: string) => {
+    console.log(`ContentRow (${title}): Arrow ${direction} pressed`);
+    return true; // Let the library handle the navigation
+  }, [title]);
+
+  const handleFocus = React.useCallback((props: any) => {
+    console.log(`ContentRow (${title}): Focused`);
+    if (onFocus) {
+      onFocus(props);
+    }
+  }, [title, onFocus]);
+
   const { ref, focusKey } = useFocusable({
-    onFocus
+    focusable: true,
+    trackChildren: true,
+    onFocus: handleFocus,
+    onBlur: () => {
+      console.log(`ContentRow (${title}): Blurred`);
+    },
+    onArrowPress
   });
 
   const scrollingRef = React.useRef<HTMLDivElement>(null);
