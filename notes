@@ -1,0 +1,9 @@
+
+
+Navıgasyon sistemi eksikleri
+
+- [ ] Sanırım focus gruplar arası ve content gridler arasında nasıl geçiş yapacagımız tam net değil. Örnegin anasayfayı dusunelım menu var solda ve sagda 10 tane alt alta farklı baslıklı yatay liste var. Bu listelere content grıd diyelim. Menüden content gırdlerın olduğu alana gecmem lazım sonrada content grıdlerın 5.sıne gitmem lazım. Bu yukarısında aşağısında sagında solunda gibi ılıskıyı nasıl kurucaz. birde aynı şekilde manuel olarak kod ıle belli bir ıteme de focus yapmam gerekebilir nasıl yaparız bunu.
+- [ ] Focus edılebılır bırımlerın bırbırıne baglanma ve komsu olma mantığı dokumanda yeterli şekilde anlatılmamış once bunun acın bilgi işte nasıl planlıycaz dıye
+- [ ] Ayrıca bu focus gruplar focus ıtemler ekstra yer kaplamamalı. Tasarımı yapılmış sadece navıgasyon aksiyonları eksik yerlere kolayca implemente edilebilmeli. Bu tarz bir yapı mümkün mu
+- [ ] Navıgasyon sistemi kesinlikle çok basit ve saglıklı gelıstırmeye acık bir yapı üzerine kurulmalı. Olabıldııgınce komple konulardan kaçmalıyız özellikle ılk basta.
+- [ ] https://688061e1c518415d44b77c43--prismatic-kringle-a74ad1.netlify.app/
